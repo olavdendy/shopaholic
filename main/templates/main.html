@@ -11,25 +11,23 @@
 <h5>Class:</h5>
 <p>{{ class }}</p>
 
-{% if not mood_entries %}
+{% if not product_entries %}
 <p>Belum ada data produk pada shopaholic</p>
 {% else %}
 <table>
   <tr>
-    <th>Mood Name</th>
-    <th>Time</th>
-    <th>Feeling</th>
-    <th>Mood Intensity</th>
+    <th>nama_produk</th>
+    <th>deskripsi</th>
+    <th>harga</th>
   </tr>
 
   {% comment %} Berikut cara memperlihatkan data mood di bawah baris ini 
   {% endcomment %} 
-  {% for mood_entry in mood_entries %}
+  {% for product_entry in product_entries %}
   <tr>
-    <td>{{mood_entry.mood}}</td>
-    <td>{{mood_entry.time}}</td>
-    <td>{{mood_entry.feelings}}</td>
-    <td>{{mood_entry.mood_intensity}}</td>
+    <td>{{product_entry.nama_produk}}</td>
+    <td>{{product_entry.deskripsi}}</td>
+    <td>{{product_entry.harga}}</td>
   </tr>
   {% endfor %}
 </table>
@@ -37,7 +35,7 @@
 
 <br />
 
-<a href="{% url 'main:create_mood_entry' %}">
+<a href="{% url 'main:create_product_entry' %}">
   <button>Add new product entry</button>
 </a>
 {% endblock content %}

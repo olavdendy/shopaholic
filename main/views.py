@@ -6,18 +6,17 @@ from django.core import serializers
 
 # Create your views here.
 def show_main(request):
-    mood_entries = ProductEntry.objects.all()
+    product_entries = ProductEntry.objects.all()
     context = {
         'store' : 'Shopaholic',
         'name': 'Olav Dendy Christian Manullang',
         'class': 'PBP A',
-        'mood_entries' : mood_entries,
+        'product_entries' : product_entries,
     }
 
     return render(request, "main.html", context)
 
 def create_product_entry(request):
-    data = ProductEntry.objects.filter(pk=id)
     form = ProductEntryForm(request.POST or None)
 
     if form.is_valid() and request.method == "POST":
@@ -26,9 +25,6 @@ def create_product_entry(request):
 
     context = {'form': form}
     return render(request, "create_product_entry.html", context)
-
-def show_xml(request):
-    data = ProductEntry.objects.all()
 
 def show_xml(request):
     data = ProductEntry.objects.all()
