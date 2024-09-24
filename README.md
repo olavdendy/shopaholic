@@ -24,3 +24,9 @@ Dalam Django, kita membutuhkan csrf_token (Cross-Site Request Forgery token) unt
 
 Saya mencoba membandingkan sendiri tampilan antara JSON dengan XML yang telah ditentukan, Saya juga memasukkan lebih dari 1 Entry sehingga terdapat perbandingan id pada kode yang telah saya buat. memahami terlebih dahulu mengapa data delivery itu penting untuk kita terapkan di kode kita. menganalisa fungsi dari is_valid() untuk mengetahui kegunaannya dan apa yang diterapkan dari fungsi tersebut.
 
+Screenshoot POSTMAN :
+![Screenshot 2024-09-18 111006](https://github.com/user-attachments/assets/9f40fb96-7b60-47c4-bb73-43e9c6fda367)
+![Screenshot 2024-09-18 110943](https://github.com/user-attachments/assets/c9f9819b-5bd6-4f7b-bc97-885494eee593)
+![Screenshot 2024-09-18 110759](https://github.com/user-attachments/assets/4f58458b-4402-45c5-9331-25adcbaba730)
+![Screenshot 2024-09-18 110901](https://github.com/user-attachments/assets/42182375-7abd-44bb-8f85-d0d97f54224d)
+
