@@ -4,29 +4,18 @@ Kelas : PBP A
 
 LINK PWS : https://pbp.cs.ui.ac.id/web/project/olav.dendy/shopaholic
 
-1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
+1. Apa perbedaan antara HttpResponseRedirect() dan redirect()
+Dari segi penggunaan antara keduanya cukup berbeda dimana penggunaan HttpResponseRedirect() perlu memasukkan URL yang valid sebagai argumennya, dan untuk redirect() ada beberapa yang bisa dimasukkan sebagai argumennya, antara lain URL, nama URL pattern ataupun objek model. redirect() lebih fleksibel dalam membuat redirect, namun apabila kita ingin mengarahkan pengguna ke dalam sbeuah URL tertentu maka kita dapat menggunakan HttpResponseRedirect().
 
-Agar data yang diberikan oleh Admin dapat terdeliver ke dalam database dan tersimpan untuk di tampilkan pada pengguna di masa yang akan datang. Data delivery memastikan bahwa data yang diperlukan oleh platform tersedia dan dapat diakses oleh pengguna atau sistem lain secara tepat waktu. Tanpa mekanisme pengiriman data yang efisien, platform mungkin tidak dapat menyajikan informasi yang diperlukan dengan cepat.
+2. Jelaskan cara kerja penghubungan model Product dengan User!
+karena kita menggunakan ForeignKey yang menghubungkan model product dengan user maka itu berarti kita dapat bahwa setiap product hanya dimiliku oleh satu user namun user dapat memiliki lebih dari satu product. Cara kerja nya dengan setiap produk akan memiliki sebuah referensi ke satu user yang merupakan pemiliki produk tersebut, maka nanti yang akan terjadi adalah, jika kita login dengan user A maka product yang ada adalah apa yang sudah didaftarkan oleh user A tersebut, namun apabila kita login dengan user B maka product yang ada pastilah bukan product dari user A melainkan product yang sudah didaftarkan oleh user B.
 
-2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
+3. Apa perbedaan antara authentication dan authorization, apakah yang dilakukan saat pengguna login? Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut.
+Authentication adalah sebuah proses yang terjadi saat user ingin login, proses tersebut berjalan dengan cara memeriksa atau memverifikasi identitas pengguna untuk memastikan apakah identitas pengguna tersebut telah terdaftar di dalam sistem atau bukan, proses ini biasa berjalan disaat pengguna ingin memasukkan username dan password. Authorization adalah pemeriksaan hak akses pengguna, proses ini berjalan setelah pengguna melewati Authentication, ibaratnya Authorization membedakan fitur-fitur yang dapat dipakai yang sudah diberikan oleh sistem, misalnya apabila seorang pembeli login akan diberikan fitur yang berbeda dengan saat seorang penjual login. Django menyediakan view login (LoginView) dan form yang digunakan untuk menangani login. Proses autentikasi dapat dilakukan dengan metode authenticate() dan login(). authenticate() memverifikasi apakah username dan password cocok.
 
-Menurut saya pribadi, JSON saya anggap lebih baik dan populer dikarenakan tampilannya yang sederhana dan lebih mudah dibaca dibanding XML, karena tampilan dan penulisan yang lebih ringkas, maka JSON juga memiliki lebih sedikit data.
-
-3. Jelaskan fungsi dari method is_valid() pada form Django dan mengapa kita membutuhkan method tersebut?
-
-Untuk membantu user mengecek apakah inputnya sesuai atau tidak dengan tipe data yang telah ditentukan. Kita butuh method tersebut agar tidak terjadi human error dan web kita dapat berjalan sesuai dengan struktur yang telah kita buat sebelumnya.
-
-4. Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
-
-Dalam Django, kita membutuhkan csrf_token (Cross-Site Request Forgery token) untuk melindungi aplikasi web dari serangan CSRF (Cross-Site Request Forgery). Serangan CSRF terjadi ketika penyerang memanfaatkan sesi pengguna yang valid untuk melakukan tindakan yang tidak sesuai di aplikasi web tanpa sepengetahuan atau persetujuan pengguna.
+4. Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari cookies dan apakah semua cookies aman digunakan?
+Django menggunakan SessionMiddleware untuk menangani sesi pengguna. Django juga mengatur dimana sesi akan disimpan, contohnya di dalam setting.py terdapat konfigurasi database untuk menyimpan sesi. kegunaan cookies antara lain untuk meningkatkan preferensi pengguna, menyimpan data sementara, melacak aktivitas pengguna untuk meningkatkan pengalaman personal. Tidak semua cookies aman, semua tergantung bagaimana cookies itu di konfigurasi, apabila cookies tidak dilindungi dengan baik maka terdapat kemungkinan akan dicuri.
 
 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
-
-Saya mencoba membandingkan sendiri tampilan antara JSON dengan XML yang telah ditentukan, Saya juga memasukkan lebih dari 1 Entry sehingga terdapat perbandingan id pada kode yang telah saya buat. memahami terlebih dahulu mengapa data delivery itu penting untuk kita terapkan di kode kita. menganalisa fungsi dari is_valid() untuk mengetahui kegunaannya dan apa yang diterapkan dari fungsi tersebut.
-
-Screenshoot POSTMAN :
-![Screenshot 2024-09-18 111006](https://github.com/user-attachments/assets/9f40fb96-7b60-47c4-bb73-43e9c6fda367)
-![Screenshot 2024-09-18 110943](https://github.com/user-attachments/assets/c9f9819b-5bd6-4f7b-bc97-885494eee593)
-![Screenshot 2024-09-18 110759](https://github.com/user-attachments/assets/4f58458b-4402-45c5-9331-25adcbaba730)
-![Screenshot 2024-09-18 110901](https://github.com/user-attachments/assets/42182375-7abd-44bb-8f85-d0d97f54224d)
+Pertama pahami terlebih dahulu apa saja yang harus diimplementasikan di dalam tugas tersebut. Setelahnya saya mencoba dengan mengimplementasikan fungsi-fungsi awal seperti login, register dan logout, selanjutnya saya mencoba membuat akun dan memasukkan data product, ternyata user lain memiliki product yang sama dengan user lainnya, disitu saya menyadari kesalahan saya karena saat itu ProductEntry yang masih belum dihubungkan dengan tiap user, selanjutnya saya mencoba untuk memahami alur last login ataupun sesi terakhir berjalan dan mengimplementasikan nya untuk membuat sebuah notifikasi kapan terakhir kali user tersebut masuk ke dalam sistem.
 
