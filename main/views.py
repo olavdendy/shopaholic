@@ -10,16 +10,17 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.utils.html import strip_tags
 
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
-    product_entries = ProductEntry.objects.filter(user=request.user)
     context = {
         'name': request.user.username,
         'store' : 'Shopaholic',
         'class': 'PBP A',
-        'product_entries' : product_entries,
         'last_login': request.COOKIES['last_login'],
     }
 
@@ -38,11 +39,11 @@ def create_product_entry(request):
     return render(request, "create_product_entry.html", context)
 
 def show_xml(request):
-    data = ProductEntry.objects.all()
+    data = ProductEntry.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def show_json(request):
-    data = ProductEntry.objects.all()
+    data = ProductEntry.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def show_xml_by_id(request, id):
@@ -75,6 +76,8 @@ def login_user(request):
         response = HttpResponseRedirect(reverse("main:show_main"))
         response.set_cookie('last_login', str(datetime.datetime.now()))
         return response
+      else:
+        messages.error(request, "Invalid username or password. Please try again.")
 
    else:
       form = AuthenticationForm(request)
@@ -89,10 +92,10 @@ def logout_user(request):
 
 def edit_product(request, id):
     # Get product entry berdasarkan id
-    mood = ProductEntry.objects.get(pk = id)
+    nama_produk = ProductEntry.objects.get(pk = id)
 
     # Set product entry sebagai instance dari form
-    form = ProductEntryForm(request.POST or None, instance=mood)
+    form = ProductEntryForm(request.POST or None, instance=nama_produk)
 
     if form.is_valid() and request.method == "POST":
         # Simpan form dan kembali ke halaman awal
@@ -100,12 +103,29 @@ def edit_product(request, id):
         return HttpResponseRedirect(reverse('main:show_main'))
 
     context = {'form': form}
-    return render(request, "edit_mood.html", context)
+    return render(request, "edit_product.html", context)
 
 def delete_product(request, id):
-    # Get mood berdasarkan id
-    mood = ProductEntry.objects.get(pk = id)
-    # Hapus mood
-    mood.delete()
+    # Get nama produk berdasarkan id
+    nama_produk = ProductEntry.objects.get(pk = id)
+    # Hapus nama produk
+    nama_produk.delete()
     # Kembali ke halaman awal
     return HttpResponseRedirect(reverse('main:show_main'))
+
+@csrf_exempt
+@require_POST
+def add_product_entry_ajax(request):
+    nama_produk = strip_tags(request.POST.get("nama_produk")) # strip HTML tags!
+    deskripsi = strip_tags(request.POST.get("deskripsi")) # strip HTML tags!
+    harga = request.POST.get("harga")
+    user = request.user
+
+    new_product = ProductEntry(
+        nama_produk=nama_produk, deskripsi=deskripsi,
+        harga=harga,
+        user=user
+    )
+    new_product.save()
+
+    return HttpResponse(b"CREATED", status=201)
